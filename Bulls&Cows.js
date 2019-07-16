@@ -6,6 +6,7 @@ var givenNumber = 1111 ;//random not valid number
 var trysCounter =0;
 var checkButton = document.getElementById("checkButton");
 var numInput = document.querySelector("input");
+var textArea = document.querySelector("textarea");
 //-----------------------------------------------------------------------------
 function numToArray(num) {
     let arr = [];
@@ -71,15 +72,15 @@ checkButton.addEventListener("click",function(){
 	if(isValid(numInput.value)){
 		trysCounter++;
 		var myNumber = numInput.value;
-		console.log(numInput.value);
 		var myNumberArr = numToArray(myNumber);
 		bulls = checkBulls(myNumberArr,givenNumberArr);
 		cows = checkCows(myNumberArr,givenNumberArr);
-		console.log("Try "+ trysCounter + " -> "+ myNumber + " -> " + bulls + " bulls & " + cows + " cows");
+		let text = "Try "+ trysCounter + " -> "+ myNumber + " -> " + bulls + " bulls & " + cows + " cows";
+		textArea.value = textArea.value +"\n"+text;
 		if(bulls===numberSize){
 			alert("Congratulation! YOU WIN !");
 		}else{
-			alert("WRONG! \n The number "+ myNumber + " have " + bulls + " bulls & " + cows + " cows")
+			// alert("WRONG! \n The number "+ myNumber + " have " + bulls + " bulls & " + cows + " cows")
 		}
 		bulls = 0;
 		cows = 0;
