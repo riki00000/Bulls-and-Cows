@@ -59,7 +59,26 @@ function clearField(input) {
     input.value = "";
 };
 //----------------------------------------------------------------------------
+function getAllValidNumbersInArray(){
+	let arr=[];
+	for(let i = 1000;i<9999;i++){
+		if(isValid(i)){
+		   arr.push(parseInt(i));
 
+		}
+	}
+	return arr;
+}
+//----------------------------------------------------------------------------
+function showPossibleNumbersInTextArea(area,array){
+	for(let i=0;i<array.length;i++){
+		area.value = area.value + "\n" + array[i];
+	}
+}
+//----------------------------------------------------------------------------
+var allValidNumbersArr = getAllValidNumbersInArray();
+showPossibleNumbersInTextArea(possAns,allValidNumbersArr);
+//----------------------------------------------------------------------------
 while(!isValid(givenNumber)){
 	if(numberSize === 4){
 		givenNumber = Math.floor(Math.random() * 9000) +1000;//random from 1000 to 9999
