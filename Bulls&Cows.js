@@ -15,7 +15,7 @@ function numToArray(num) {
         arr.push(parseInt(numToStr[i]));
     }
     return arr;
-}
+};
 //-----------------------------------------------------------------------------
 function isValid(num){
 	let arr = numToArray(num);
@@ -30,7 +30,7 @@ function isValid(num){
 		}
 	}
 	return true;
-}
+};
 //----------------------------------------------------------------------------
 function checkBulls(myNumberArr,givenNumberArr){
 	let bulls =0 ;
@@ -40,7 +40,7 @@ function checkBulls(myNumberArr,givenNumberArr){
 		}
 	}
 	return bulls;
-}
+};
 //----------------------------------------------------------------------------
 function checkCows(myNumberArr,givenNumberArr){
 	let cows =0;
@@ -52,7 +52,11 @@ function checkCows(myNumberArr,givenNumberArr){
 		}
 	}
 	return cows;
-}
+};
+//----------------------------------------------------------------------------
+function clearField(input) {
+    input.value = "";
+};
 //----------------------------------------------------------------------------
 
 while(!isValid(givenNumber)){
@@ -84,6 +88,7 @@ checkButton.addEventListener("click",function(){
 		}
 		bulls = 0;
 		cows = 0;
+		clearField(numInput);
 	}else{
 		alert("The number is not valid !")
 	}
