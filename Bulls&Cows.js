@@ -5,8 +5,9 @@ var cows = 0;
 var givenNumber = 1111 ;//random not valid number
 var trysCounter =0;
 var checkButton = document.getElementById("checkButton");
-var numInput = document.querySelector("input");
-var textArea = document.querySelector("textarea");
+var numInput = document.getElementById("input");
+var textArea = document.getElementById("trysArea");
+var possAns = document.getElementById("possibleAnswers");
 //-----------------------------------------------------------------------------
 function numToArray(num) {
     let arr = [];

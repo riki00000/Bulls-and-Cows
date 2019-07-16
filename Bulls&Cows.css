@@ -5,3 +5,11 @@ body{
 	background-repeat: no-repeat;
 	background-size: cover;
 }
+.container{
+	display: inline-block;
+	background-color: pink;
+	border-style: inset;
+	margin-top: 1em;
+	margin-left: 4em;
+	margin-right: 4em;
+}
