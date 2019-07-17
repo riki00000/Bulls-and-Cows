@@ -61,7 +61,7 @@ function clearField(input) {
 //----------------------------------------------------------------------------
 function getAllValidNumbersInArray(){
 	let arr=[];
-	for(let i = 1000;i<9999;i++){
+	for(let i = 1023;i<9876;i++){
 		if(isValid(i)){
 		   arr.push(parseInt(i));
 
@@ -76,22 +76,30 @@ function showPossibleNumbersInTextArea(area,array){
 	}
 }
 //----------------------------------------------------------------------------
+Array.prototype.random = function () {
+  return this[Math.floor((Math.random()*this.length))];
+}
+//----------------------------------------------------------------------------
+// function randomGenerateValidNumber(givenNumber,numberSize){
+// 	while(!isValid(givenNumber)){
+// 		if(numberSize === 4){
+// 			givenNumber = Math.floor(Math.random() * 9000) +1000;//random from 1000 to 9999
+// 		}else if(numberSize === 3){
+// 			givenNumber = Math.floor(Math.random() * 900) +100;//random from 100 to 999
+// 		}else if(numberSize === 5){
+// 			givenNumber = Math.floor(Math.random() * 90000) +10000;//random from 10000 to 99999
+// 		}else{
+// 			alert("numberSize is not declarated !");
+// 		}
+// 	}	
+// }
+//-----------------------------------------------------------------------------
 var allValidNumbersArr = getAllValidNumbersInArray();
 showPossibleNumbersInTextArea(possAns,allValidNumbersArr);
-//----------------------------------------------------------------------------
-while(!isValid(givenNumber)){
-	if(numberSize === 4){
-		givenNumber = Math.floor(Math.random() * 9000) +1000;//random from 1000 to 9999
-	}else if(numberSize === 3){
-		givenNumber = Math.floor(Math.random() * 900) +100;//random from 100 to 999
-	}else if(numberSize === 5){
-		givenNumber = Math.floor(Math.random() * 90000) +10000;//random from 10000 to 99999
-	}else{
-		alert("numberSize is not declarated !");
-	}
-}
+givenNumber = allValidNumbersArr.random();
+// console.log(givenNumber);
+// givenNumber = randomGenerateValidNumber(givenNumber,numberSize);
 var givenNumberArr = numToArray(givenNumber);
-//-----------------------------------------------------------------------------
 checkButton.addEventListener("click",function(){
 	if(isValid(numInput.value)){
 		trysCounter++;
@@ -110,6 +118,6 @@ checkButton.addEventListener("click",function(){
 		cows = 0;
 		clearField(numInput);
 	}else{
-		alert("The number is not valid !")
+		alert("The number is not valid !");
 	}
 });
