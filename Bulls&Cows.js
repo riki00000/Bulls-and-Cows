@@ -16,8 +16,8 @@ function main (){
 	// var checkBox = document.getElementsByName("checkbox");
 	let userTurn = true;
 	let checkButton2 = document.getElementById("checkButtonC");
-	let imputBulls = document.getElementById("inputBulls");
-	let imputCows = document.getElementById("inputCows");
+	let inputBulls = document.getElementById("inputBulls");
+	let inputCows = document.getElementById("inputCows");
 	let userContainer = document.getElementsByClassName("userContainer");
 	let computerContainer = document.getElementsByClassName("computerContainer");
 	let compGuess = document.getElementById("compGuess");
@@ -38,24 +38,14 @@ function main (){
 	givenNumber = allValidNumbersArr.random();
 	let givenNumberArr = numToArray(givenNumber);
 
-
-	if(userTurn){
-		checkButton.disabled = false;
-		checkButton2.disabled = true;
-		inputBulls.disabled = true;
-		inputCows.disabled = true;
-		numInput.disabled = false;
-		userContainer.bgColor = "red";
-		computerContainer.bgColor = "#F5F5F5";
-
-	}else{
-		
-	}
-
 	numInput.addEventListener("keyup", function(event) {
 	  if (event.keyCode === 13) {
 	    event.preventDefault();
-	    checkButton.click(); //turns
+	    if(userTurn){
+	    	checkButton.click();
+	    }else{
+	    	checkButton2.click();
+	    }
 	  }
 	});
 
@@ -83,10 +73,10 @@ function main (){
 			userTurn = false;
 			compTrysCounter++;
 			if(compTrysCounter<2){
-				compGuess.value = allValidNumbersArr.random();
+				compGuess.value = allValidNumbersArr[0];
 				compTrysArray.push(parseInt(compGuess.value));
 			}else{
-				compGuess.value = compTrysArray[compTrysCounter]
+				compGuess.value = compTrysArray[compTrysCounter-1]
 			}
 		}else{
 			alert("The number is not valid !");
@@ -94,38 +84,118 @@ function main (){
 	});
 
 	checkButton2.addEventListener("click",function(){
-		if(validBullsCows(imputBulls.value,imputCows.value,numberSize)){
+		if(validBullsCows(inputBulls.value,inputCows.value,numberSize)){
+			if(inputBulls.value == ""){
+				inputBulls.value =0;
+			}
+			if(inputCows.value == ""){
+				inputCows.value =0;
+			}
 			compBullsArray.push(parseInt(inputBulls.value));
-			compCowsArray.push(parseInt(imputCows.value));
+			compCowsArray.push(parseInt(inputCows.value));
+			//--------------------------------------------------------------------------------
 			if(compBullsArray[compTrysCounter-1]==0 && compCowsArray[compTrysCounter-1]==0){
 				let arr = numToArray(compGuess.value);
 				for(let i =0;i<arr.length;i++){
 					document.getElementById("compCheck"+arr[i]).checked = false;
 				}
+				
+			}
+			//--------------------------------------------------------------------------------
+			if(compTrysCounter>=2){
+				if(compBullsArray[compTrysCounter-2] + compCowsArray[compTrysCounter-2] !=0 ){
+					let previusNumberBigger = undefined;
+					if(compBullsArray[compTrysCounter-2] + compCowsArray[compTrysCounter-2] < compBullsArray[compTrysCounter-1] + compCowsArray[compTrysCounter-1]){
+						previusNumberBigger = false;
+					}else if(compBullsArray[compTrysCounter-2] + compCowsArray[compTrysCounter-2] > compBullsArray[compTrysCounter-1] + compCowsArray[compTrysCounter-1]){
+						previusNumberBigger = true;
+					}else if (compBullsArray[compTrysCounter-2] + compCowsArray[compTrysCounter-2] == compBullsArray[compTrysCounter-1] + compCowsArray[compTrysCounter-1]){
+						previusNumberBigger = undefined;
+					}
+					let previusNumber = numToArray(compTrysArray[compTrysCounter-2]);
+					let currentNumber = numToArray(compTrysArray[compTrysCounter-1]);
+					let flag = 0;
+					let index = null;
+					for(let i =0;i<4;i++){
+						if(previusNumber[i] != currentNumber[i]){
+							flag++;
+							index = i;
+						}
+					}
+					if(flag == 1 && previusNumberBigger==false){
+						document.getElementById("compCheck"+previusNumber[index]).checked = false;
+					}else if(flag==1 && previusNumberBigger == true){
+						document.getElementById("compCheck"+currentNumber[index]).checked = false;
+					}
+					compTrysArray.push(parseInt(compTrysArray[compTrysCounter-1]+1));
+				}else{
+					compTrysArray.push(parseInt(compTrysArray[compTrysCounter-1]+1));
+				}
+
+			}else{
+				compTrysArray.push(parseInt(compTrysArray[compTrysCounter-1]+1));
 			}
 
-
-
-
-
+			//----------------------------------------------------------------------------------
+			console.log(compBullsArray[compTrysCounter-1] + compCowsArray[compTrysCounter-1]);
+			if(compBullsArray[compTrysCounter-1] + compCowsArray[compTrysCounter-1] == 4){
+				let answer = numToArray(compTrysArray[compTrysCounter-1]);
+				for(let i = 0;i<10;i++){
+					if(answer[0] != i && answer[1] != i && answer[2] != i && answer[3] != i ){
+						document.getElementById("compCheck"+i).checked = false;
+					}
+				}
+				
+			}
+			//----------------------------------------------------------------------------------
 			let compFilter = filterNumber(allValidNumbersArr,getCheckBoxArray("comp"),getImputNumberFilterArray("comp"));
 	    	clearField(compPossibleAnswersArea);
+	    	for(let i=0;i<compFilter.length;i++){
+	    		for(let j=0;j<compTrysArray.length;j++){
+					if(compTrysArray[j] == compFilter[i]){
+						compFilter.splice(i,1);
+					}
+	    		}
+			}
 	    	showPossibleNumbersInTextArea(compPossibleAnswersArea,compFilter);
-	    	if(compFilter.length == 0){
-	    		alert("Your number does not exist ! You are a cheater!");
+	    	//-----------------------------------------------------------------------------------
+	    	if(compBullsArray[compTrysCounter-1]==0 && compCowsArray[compTrysCounter-1]==0){
+	    		compTrysArray.push(parseInt(compFilter[0]));
+	    	}
+	    	compTextArea.value +="\n"+ printTry(compTrysCounter,compTrysArray[compTrysCounter-1],inputBulls.value,inputCows.value);
+	    	if(compBullsArray[compTrysCounter-1]==4){
+	    		alert("Computer WIN ! You Lose ! Try Again !");
 	    		newGameButton.click();
 	    	}
-	    	compTextArea.value +="\n"+ printTry(compTrysCounter,compTrysArray[compTrysCounter-1],inputBulls.value,imputCows.value);
-	    	clearField(imputBulls);
-	    	clearField(imputCows);
+	    	clearField(inputBulls);
+	    	clearField(inputCows);
 			checkButton.disabled = false;
 			checkButton2.disabled = true;
 			inputBulls.disabled = true;
 			inputCows.disabled = true;
 			numInput.disabled = false;
+			clearField(compGuess);
 			userContainer.bgColor = "red";//not work
 			computerContainer.bgColor = "#F5F5F5";//not work
 			userTurn = true;
+			let valid = false;
+			while(valid == false){
+				for(let i=0;i<compFilter.length;i++){
+					if(compTrysArray[compTrysCounter-1] == compFilter[i]){
+						compFilter.splice(i,1);
+					}
+					if(compTrysArray[compTrysCounter] == compFilter[i]){
+						valid=true;
+					}
+				}
+				if(valid==false){
+					compTrysArray[compTrysCounter]++;
+				}	
+			}
+			if(compFilter.length == 0){
+	    		alert("Your number does not exist ! You are a cheater!");
+	    		newGameButton.click();
+	    	}
 		}else{
 			alert("The number of Bulls or Cows is not valid !");
 		}
@@ -151,6 +221,9 @@ function main (){
 		clearField(compTextArea);
 		compTextArea.value='You can see Comp trys here :';
 		showPossibleNumbersInTextArea(compPossibleAnswersArea,allValidNumbersArr);
+		compTrysArray = [];
+		compBullsArray = [];
+		compCowsArray = [];
 	});
 
 };
@@ -161,7 +234,8 @@ function printTry(trysCounter,guessNumber,bulls,cows){
 }
 //-----------------------------------------------------------------------------
 function validBullsCows(bulls,cows,numberSize){
-	if(bulls>=0 && cows>=0 && bulls<=numberSize && cows<=numberSize && bulls+cows<=numberSize){
+	let sum = parseInt(bulls) + parseInt(cows);
+	if(bulls>=0 && cows>=0 && bulls<=4 && cows<=4 && sum<=4){
 		return true;
 	}else{
 		return false;
@@ -228,7 +302,8 @@ function clearField(input) {
 //----------------------------------------------------------------------------
 function clearAllNumberFilterFields(player){
 	for(let i =1;i<=4;i++){
-		clearField(document.getElementById(player + "FilterNumber"+i));
+		let curr = document.getElementById(player + "FilterNumber"+i);
+		curr = "" ;
 	}
 }
 //----------------------------------------------------------------------------
