@@ -144,15 +144,35 @@ function filterNumber(array){
 	let inputNumberFilterArray = getImputNumberFilterArray();
 	let newFilteredArray = [];
 	let newArray = filterArr(array);
-	for(let i=0;i<newArray.length;i++){
-		let currNum = numToArray(newArray[i]);
-		for(let j=0;j<inputNumberFilterArray.length;j++){
-			if(inputNumberFilterArray[j] != "" && inputNumberFilterArray[j] == currNum[j]){
-				newFilteredArray.push(parseInt(newArray[i]));
-			}	
-		}
+	let haveNumFlag = false;
+	let haveNumFlagArr = [];
+	let haveNumCounter = 0;
+	for(let j=0;j<inputNumberFilterArray.length;j++){
+		if(inputNumberFilterArray[j] != ""){
+			haveNumFlag = true;
+			haveNumFlagArr.push(true);
+			haveNumCounter++;
+		}else{
+			haveNumFlagArr.push(false);
+		}	
 	}
-	return  newFilteredArray ;
+	if(haveNumFlag){
+		for(let i=0;i<newArray.length;i++){
+			let currNum = numToArray(newArray[i]);
+			let flag = 0;
+			for(let j=0;j<inputNumberFilterArray.length;j++){
+				if(inputNumberFilterArray[j] == currNum[j] && haveNumFlagArr[j] === true){
+					flag++;
+				}	
+			}
+			if(flag === haveNumCounter){
+				newFilteredArray.push(parseInt(newArray[i]));
+			}
+		}
+		return  newFilteredArray ;
+	}else{
+		return newArray;
+	}
 
 }
 //----------------------------------------------------------------------------
