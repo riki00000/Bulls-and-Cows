@@ -5,11 +5,11 @@ function main (){
 	let userBulls = 0;
 	let userCows = 0;
 	let givenNumber = 1111 ;//random not valid number
-	let trysCounter =0;
+	let userTrysCounter =0;
 	let checkButton = document.getElementById("checkButton");
 	let numInput = document.getElementById("input");
-	let textArea = document.getElementById("trysArea");
-	let possAns = document.getElementById("possibleAnswers");
+	let textArea = document.getElementById("userTrysArea");
+	let userPossibleAnswersArea = document.getElementById("possibleAnswers");
 	let newGameButton = document.getElementById("newGameButton");
 	let notepadArea = document.getElementById("notepad");
 	let filterButton = document.getElementById("filterButton");
@@ -20,12 +20,21 @@ function main (){
 	let imputCows = document.getElementById("inputCows");
 	let userContainer = document.getElementsByClassName("userContainer");
 	let computerContainer = document.getElementsByClassName("computerContainer");
+	let compGuess = document.getElementById("compGuess");
+	let compPossibleAnswersArea = document.getElementById("possibleAnswersC");
+	let compTextArea = document.getElementById("compTrysArea");
+	let compTrysCounter =0;
+	let compTrysArray = [];
+	let compBullsArray = [];
+	let compCowsArray = [];
+
 
 
 
 
 	let allValidNumbersArr = getAllValidNumbersInArray(numberSize);
-	showPossibleNumbersInTextArea(possAns,allValidNumbersArr);
+	showPossibleNumbersInTextArea(userPossibleAnswersArea,allValidNumbersArr);
+	showPossibleNumbersInTextArea(compPossibleAnswersArea,allValidNumbersArr);
 	givenNumber = allValidNumbersArr.random();
 	let givenNumberArr = numToArray(givenNumber);
 
@@ -52,12 +61,12 @@ function main (){
 
 	checkButton.addEventListener("click",function(){
 		if(isValid(numInput.value,numberSize)){
-			trysCounter++;
+			userTrysCounter++;
 			let myNumber = numInput.value;
 			let myNumberArr = numToArray(myNumber);
 			userBulls = checkBulls(myNumberArr,givenNumberArr);
 			userCows = checkCows(myNumberArr,givenNumberArr);
-			textArea.value +="\n"+ printTry(trysCounter,myNumber,userBulls,userCows);
+			textArea.value +="\n"+ printTry(userTrysCounter,myNumber,userBulls,userCows);
 			if(userBulls===numberSize){
 				alert("Congratulation! YOU WIN !");
 			}
@@ -72,6 +81,13 @@ function main (){
 			userContainer.bgColor = "#F5F5F5";//not work
 			computerContainer.bgColor = "red";//not work
 			userTurn = false;
+			compTrysCounter++;
+			if(compTrysCounter<2){
+				compGuess.value = allValidNumbersArr.random();
+				compTrysArray.push(parseInt(compGuess.value));
+			}else{
+				compGuess.value = compTrysArray[compTrysCounter]
+			}
 		}else{
 			alert("The number is not valid !");
 		}
@@ -79,14 +95,29 @@ function main (){
 
 	checkButton2.addEventListener("click",function(){
 		if(validBullsCows(imputBulls.value,imputCows.value,numberSize)){
+			compBullsArray.push(parseInt(inputBulls.value));
+			compCowsArray.push(parseInt(imputCows.value));
+			if(compBullsArray[compTrysCounter-1]==0 && compCowsArray[compTrysCounter-1]==0){
+				let arr = numToArray(compGuess.value);
+				for(let i =0;i<arr.length;i++){
+					document.getElementById("compCheck"+arr[i]).checked = false;
+				}
+			}
 
 
 
 
 
-
-
-
+			let compFilter = filterNumber(allValidNumbersArr,getCheckBoxArray("comp"),getImputNumberFilterArray("comp"));
+	    	clearField(compPossibleAnswersArea);
+	    	showPossibleNumbersInTextArea(compPossibleAnswersArea,compFilter);
+	    	if(compFilter.length == 0){
+	    		alert("Your number does not exist ! You are a cheater!");
+	    		newGameButton.click();
+	    	}
+	    	compTextArea.value +="\n"+ printTry(compTrysCounter,compTrysArray[compTrysCounter-1],inputBulls.value,imputCows.value);
+	    	clearField(imputBulls);
+	    	clearField(imputCows);
 			checkButton.disabled = false;
 			checkButton2.disabled = true;
 			inputBulls.disabled = true;
@@ -102,18 +133,24 @@ function main (){
 
 	filterButton.addEventListener("click",function(){
 		let filter = filterNumber(allValidNumbersArr,getCheckBoxArray("user"),getImputNumberFilterArray());
-	    clearField(possAns);
-	    showPossibleNumbersInTextArea(possAns,filter);
+	    // console.log(getCheckBoxArray("user"));
+	    clearField(userPossibleAnswersArea);
+	    showPossibleNumbersInTextArea(userPossibleAnswersArea,filter);
 	});
 
 	newGameButton.addEventListener("click",function(){
-		clearAllNumberFilterFields();
+		clearAllNumberFilterFields("user");
 		checkedAllCheckBoxes("user");
 		clearField(notepadArea);
 		clearField(textArea);
 		textArea.value = 'You can see your trys here :';
 		givenNumber = allValidNumbersArr.random();
-		filterButton.click();
+		showPossibleNumbersInTextArea(userPossibleAnswersArea,allValidNumbersArr);
+		clearAllNumberFilterFields("comp");
+		checkedAllCheckBoxes("comp");
+		clearField(compTextArea);
+		compTextArea.value='You can see Comp trys here :';
+		showPossibleNumbersInTextArea(compPossibleAnswersArea,allValidNumbersArr);
 	});
 
 };
@@ -124,11 +161,19 @@ function printTry(trysCounter,guessNumber,bulls,cows){
 }
 //-----------------------------------------------------------------------------
 function validBullsCows(bulls,cows,numberSize){
-	if(bulls>0 && cows>0 && bulls<=numberSize && cows<=numberSize){
+	if(bulls>=0 && cows>=0 && bulls<=numberSize && cows<=numberSize && bulls+cows<=numberSize){
 		return true;
 	}else{
 		return false;
 	}
+}
+//-----------------------------------------------------------------------------
+function arrayToNum(array){
+	let num = 0;
+	num+=array[0]*1000;
+	num+=array[1]*100;
+	num+=array[2]*10;
+	num+=array[3]*1;
 }
 //-----------------------------------------------------------------------------
 function numToArray(num) {
@@ -181,9 +226,9 @@ function clearField(input) {
     input.value = "";
 };
 //----------------------------------------------------------------------------
-function clearAllNumberFilterFields(){
+function clearAllNumberFilterFields(player){
 	for(let i =1;i<=4;i++){
-		clearField(document.getElementById("filterNumber"+i));
+		clearField(document.getElementById(player + "FilterNumber"+i));
 	}
 }
 //----------------------------------------------------------------------------
@@ -223,12 +268,20 @@ function checkedAllCheckBoxes(player){
 	}
 }
 //----------------------------------------------------------------------------
-function getImputNumberFilterArray(){
+function getImputNumberFilterArray(player){
 	let array=[]
 	for(let i = 1 ; i<=4;i++){
-		array.push(document.getElementById("filterNumber"+i).value);
+		array.push(document.getElementById(player + "FilterNumber"+i).value);
 	}
 	return array;
+}
+//----------------------------------------------------------------------------
+function getImputNumberFilterArray(){
+	let array=[]
+    for(let i = 1 ; i<=4;i++){
+        array.push(document.getElementById("filterNumber"+i).value);
+    }
+    return array;
 }
 //----------------------------------------------------------------------------
 function filterArr(array,checkBoxArray){
