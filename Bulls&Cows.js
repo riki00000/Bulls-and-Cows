@@ -193,9 +193,14 @@ function filterNumber(array){
 var allValidNumbersArr = getAllValidNumbersInArray();
 showPossibleNumbersInTextArea(possAns,allValidNumbersArr);
 givenNumber = allValidNumbersArr.random();
-// console.log(givenNumber);
-// givenNumber = randomGenerateValidNumber(givenNumber,numberSize);
 var givenNumberArr = numToArray(givenNumber);
+
+numInput.addEventListener("keyup", function(event) {
+  if (event.keyCode === 13) {
+    event.preventDefault();
+    checkButton.click();
+  }
+});
 
 checkButton.addEventListener("click",function(){
 	if(isValid(numInput.value)){
@@ -218,69 +223,7 @@ checkButton.addEventListener("click",function(){
 		alert("The number is not valid !");
 	}
 });
-// checkBox0.addEventListener( 'change', function() {
-//     let filter = filterArr(allValidNumbersArr);
-//     clearField(possAns);
-//     showPossibleNumbersInTextArea(possAns,filter);
-// });
-// checkBox1.addEventListener( 'change', function() {
-//     let filter = filterArr(allValidNumbersArr);
-//     clearField(possAns);
-//     showPossibleNumbersInTextArea(possAns,filter);
-// });
 
-// checkBox2.addEventListener( 'change', function() {
-//     let filter = filterArr(allValidNumbersArr);
-//     clearField(possAns);
-//     showPossibleNumbersInTextArea(possAns,filter);
-// });
-
-// checkBox3.addEventListener( 'change', function() {
-//     let filter = filterArr(allValidNumbersArr);
-//     clearField(possAns);
-//     showPossibleNumbersInTextArea(possAns,filter);
-// });
-
-// checkBox4.addEventListener( 'change', function() {
-//     let filter = filterArr(allValidNumbersArr);
-//     clearField(possAns);
-//     showPossibleNumbersInTextArea(possAns,filter);
-// });
-
-// checkBox5.addEventListener( 'change', function() {
-//     let filter = filterArr(allValidNumbersArr);
-//     clearField(possAns);
-//     showPossibleNumbersInTextArea(possAns,filter);
-// });
-
-// checkBox6.addEventListener( 'change', function() {
-//     let filter = filterArr(allValidNumbersArr);
-//     clearField(possAns);
-//     showPossibleNumbersInTextArea(possAns,filter);
-// });
-
-// checkBox7.addEventListener( 'change', function() {
-//     let filter = filterArr(allValidNumbersArr);
-//     clearField(possAns);
-//     showPossibleNumbersInTextArea(possAns,filter);
-// });
-
-// checkBox8.addEventListener( 'change', function() {
-//     let filter = filterArr(allValidNumbersArr);
-//     clearField(possAns);
-//     showPossibleNumbersInTextArea(possAns,filter);
-// });
-
-// checkBox9.addEventListener( 'change', function() {
-//     let filter = filterArr(allValidNumbersArr);
-//     clearField(possAns);
-//     showPossibleNumbersInTextArea(possAns,filter);
-// });
-// number1.addEventListener( 'change', function() {
-//     let filter = filterNumber(allValidNumbersArr);
-//     clearField(possAns);
-//     showPossibleNumbersInTextArea(possAns,filter);
-// });
 filterButton.addEventListener("click",function(){
 	let filter = filterNumber(allValidNumbersArr);
     clearField(possAns);
