@@ -1,29 +1,57 @@
 //alert("Connected");
-var numberSize = 4;
-var bulls = 0;
-var cows = 0;
-var givenNumber = 1111 ;//random not valid number
-var trysCounter =0;
-var checkButton = document.getElementById("checkButton");
-var numInput = document.getElementById("input");
-var textArea = document.getElementById("trysArea");
-var possAns = document.getElementById("possibleAnswers");
-var checkBox0 = document.getElementById("zero");
-var checkBox1 = document.getElementById("one");
-var checkBox2 = document.getElementById("two");
-var checkBox3 = document.getElementById("three");
-var checkBox4 = document.getElementById("four");
-var checkBox5 = document.getElementById("five");
-var checkBox6 = document.getElementById("six");
-var checkBox7 = document.getElementById("seven");
-var checkBox8 = document.getElementById("eight");
-var checkBox9 = document.getElementById("nine");
-// var checkBox = document.getElementsByName("checkbox");
-var number1 = document.getElementById("filterNumber1");
-var number2 = document.getElementById("filterNumber2");
-var number3 = document.getElementById("filterNumber3");
-var number4 = document.getElementById("filterNumber4");
-var filterButton = document.getElementById("filterButton")
+
+function main (){
+	let numberSize = 4;
+	let bulls = 0;
+	let cows = 0;
+	let givenNumber = 1111 ;//random not valid number
+	let trysCounter =0;
+	let checkButton = document.getElementById("checkButton");
+	let numInput = document.getElementById("input");
+	let textArea = document.getElementById("trysArea");
+	let possAns = document.getElementById("possibleAnswers");
+	// var checkBox = document.getElementsByName("checkbox");
+	let filterButton = document.getElementById("filterButton")
+	let allValidNumbersArr = getAllValidNumbersInArray(numberSize);
+	showPossibleNumbersInTextArea(possAns,allValidNumbersArr);
+	givenNumber = allValidNumbersArr.random();
+	let givenNumberArr = numToArray(givenNumber);
+
+	numInput.addEventListener("keyup", function(event) {
+	  if (event.keyCode === 13) {
+	    event.preventDefault();
+	    checkButton.click();
+	  }
+	});
+
+	checkButton.addEventListener("click",function(){
+		if(isValid(numInput.value,numberSize)){
+			trysCounter++;
+			let myNumber = numInput.value;
+			let myNumberArr = numToArray(myNumber);
+			bulls = checkBulls(myNumberArr,givenNumberArr);
+			cows = checkCows(myNumberArr,givenNumberArr);
+			let text = "Try "+ trysCounter + " -> "+ myNumber + " -> " + bulls + " bulls & " + cows + " cows";
+			textArea.value = textArea.value +"\n"+text;
+			if(bulls===numberSize){
+				alert("Congratulation! YOU WIN !");
+			}else{
+				// alert("WRONG! \n The number "+ myNumber + " have " + bulls + " bulls & " + cows + " cows")
+			}
+			bulls = 0;
+			cows = 0;
+			clearField(numInput);
+		}else{
+			alert("The number is not valid !");
+		}
+	});
+	filterButton.addEventListener("click",function(){
+		let filter = filterNumber(allValidNumbersArr);
+	    clearField(possAns);
+	    showPossibleNumbersInTextArea(possAns,filter);
+	});
+
+};
 //-----------------------------------------------------------------------------
 function numToArray(num) {
     let arr = [];
@@ -34,7 +62,7 @@ function numToArray(num) {
     return arr;
 };
 //-----------------------------------------------------------------------------
-function isValid(num){
+function isValid(num,numberSize){
 	let arr = numToArray(num);
 	if(arr[0] == 0){
 		return false;
@@ -75,10 +103,10 @@ function clearField(input) {
     input.value = "";
 };
 //----------------------------------------------------------------------------
-function getAllValidNumbersInArray(){
+function getAllValidNumbersInArray(numberSize){
 	let arr=[];
 	for(let i = 1023;i<9876;i++){
-		if(isValid(i)){
+		if(isValid(i,numberSize)){
 		   arr.push(parseInt(i));
 
 		}
@@ -98,6 +126,16 @@ Array.prototype.random = function () {
 }
 //----------------------------------------------------------------------------
 function getCheckBoxArray(){
+	let checkBox0 = document.getElementById("zero");
+	let checkBox1 = document.getElementById("one");
+	let checkBox2 = document.getElementById("two");
+	let checkBox3 = document.getElementById("three");
+	let checkBox4 = document.getElementById("four");
+	let checkBox5 = document.getElementById("five");
+	let checkBox6 = document.getElementById("six");
+	let checkBox7 = document.getElementById("seven");
+	let checkBox8 = document.getElementById("eight");
+	let checkBox9 = document.getElementById("nine");
 	let array = [];
 	array.push(checkBox0.checked);
 	array.push(checkBox1.checked);
@@ -113,6 +151,10 @@ function getCheckBoxArray(){
 }
 //----------------------------------------------------------------------------
 function getImputNumberFilterArray(){
+	let number1 = document.getElementById("filterNumber1");
+	let number2 = document.getElementById("filterNumber2");
+	let number3 = document.getElementById("filterNumber3");
+	let number4 = document.getElementById("filterNumber4");
 	let array=[]
 	array.push(number1.value);
 	array.push(number2.value);
@@ -190,42 +232,5 @@ function filterNumber(array){
 // 	}	
 // }
 //-----------------------------------------------------------------------------
-var allValidNumbersArr = getAllValidNumbersInArray();
-showPossibleNumbersInTextArea(possAns,allValidNumbersArr);
-givenNumber = allValidNumbersArr.random();
-var givenNumberArr = numToArray(givenNumber);
 
-numInput.addEventListener("keyup", function(event) {
-  if (event.keyCode === 13) {
-    event.preventDefault();
-    checkButton.click();
-  }
-});
-
-checkButton.addEventListener("click",function(){
-	if(isValid(numInput.value)){
-		trysCounter++;
-		var myNumber = numInput.value;
-		var myNumberArr = numToArray(myNumber);
-		bulls = checkBulls(myNumberArr,givenNumberArr);
-		cows = checkCows(myNumberArr,givenNumberArr);
-		let text = "Try "+ trysCounter + " -> "+ myNumber + " -> " + bulls + " bulls & " + cows + " cows";
-		textArea.value = textArea.value +"\n"+text;
-		if(bulls===numberSize){
-			alert("Congratulation! YOU WIN !");
-		}else{
-			// alert("WRONG! \n The number "+ myNumber + " have " + bulls + " bulls & " + cows + " cows")
-		}
-		bulls = 0;
-		cows = 0;
-		clearField(numInput);
-	}else{
-		alert("The number is not valid !");
-	}
-});
-
-filterButton.addEventListener("click",function(){
-	let filter = filterNumber(allValidNumbersArr);
-    clearField(possAns);
-    showPossibleNumbersInTextArea(possAns,filter);
-});
+main();

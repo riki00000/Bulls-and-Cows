@@ -13,12 +13,12 @@ body{
 	margin-left: 4em;
 	margin-right: 4em;
 	float: left;
-	width: 400px;
+	width: 350px;
 }
 .filterNumber{
-	width: 10%;
-	margin-left: 5px;
-	margin-right: 5px;
+	width: 5%;
+	margin-left: 8px;
+	margin-right: 8px;
 }
 input[type=number]::-webkit-inner-spin-button, 
 input[type=number]::-webkit-outer-spin-button { 
