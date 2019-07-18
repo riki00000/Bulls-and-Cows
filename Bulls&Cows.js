@@ -10,8 +10,10 @@ function main (){
 	let numInput = document.getElementById("input");
 	let textArea = document.getElementById("trysArea");
 	let possAns = document.getElementById("possibleAnswers");
+	let newGameButton = document.getElementById("newGameButton");
+	let notepadArea = document.getElementById("notepad");
+	let filterButton = document.getElementById("filterButton");
 	// var checkBox = document.getElementsByName("checkbox");
-	let filterButton = document.getElementById("filterButton")
 	let allValidNumbersArr = getAllValidNumbersInArray(numberSize);
 	showPossibleNumbersInTextArea(possAns,allValidNumbersArr);
 	givenNumber = allValidNumbersArr.random();
@@ -45,13 +47,26 @@ function main (){
 			alert("The number is not valid !");
 		}
 	});
+
 	filterButton.addEventListener("click",function(){
 		let filter = filterNumber(allValidNumbersArr);
 	    clearField(possAns);
 	    showPossibleNumbersInTextArea(possAns,filter);
 	});
 
+	newGameButton.addEventListener("click",function(){
+		clearAllNumberFilterFields();
+		checkedAllCheckBoxes();
+		clearField(notepadArea);
+		clearField(textArea);
+		textArea.value = 'You can see your trys here :';
+		givenNumber = allValidNumbersArr.random();
+		filterButton.click();
+	});
+
 };
+//-----------------------------------------------------------------------------
+
 //-----------------------------------------------------------------------------
 function numToArray(num) {
     let arr = [];
@@ -103,6 +118,13 @@ function clearField(input) {
     input.value = "";
 };
 //----------------------------------------------------------------------------
+function clearAllNumberFilterFields(){
+	clearField(document.getElementById("filterNumber1"));
+	clearField(document.getElementById("filterNumber2"));
+	clearField(document.getElementById("filterNumber3"));
+	clearField(document.getElementById("filterNumber4"));
+}
+//----------------------------------------------------------------------------
 function getAllValidNumbersInArray(numberSize){
 	let arr=[];
 	for(let i = 1023;i<9876;i++){
@@ -148,6 +170,19 @@ function getCheckBoxArray(){
 	array.push(checkBox8.checked);
 	array.push(checkBox9.checked);
 	return array;
+}
+//----------------------------------------------------------------------------
+function checkedAllCheckBoxes(){
+	document.getElementById("zero").checked = true;
+	document.getElementById("one").checked = true;
+	document.getElementById("two").checked = true;
+	document.getElementById("three").checked = true;
+	document.getElementById("four").checked = true;
+	document.getElementById("five").checked = true;
+	document.getElementById("six").checked = true;
+	document.getElementById("seven").checked = true;
+    document.getElementById("eight").checked = true;
+	document.getElementById("nine").checked = true;
 }
 //----------------------------------------------------------------------------
 function getImputNumberFilterArray(){
