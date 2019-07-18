@@ -6,53 +6,92 @@
 	</head>
 	<body>
 		<div class="container" id="first">
-			<!-- <div class="container"> -->
-				<h1 align="middle">Possible Answers :</h1>
-				<p align="middle">
-					1<input type="checkbox" checked name="checkbox" id="one">
-					2<input type="checkbox" checked name="checkbox" id="two">
-					3<input type="checkbox" checked name="checkbox" id="three">
-					4<input type="checkbox" checked name="checkbox" id="four">
-					5<input type="checkbox" checked name="checkbox" id="five">
-					6<input type="checkbox" checked name="checkbox" id="six">
-					7<input type="checkbox" checked name="checkbox" id="seven">
-					8<input type="checkbox" checked name="checkbox" id="eight">
-					9<input type="checkbox" checked name="checkbox" id="nine">
-					0<input type="checkbox" checked name="checkbox" id="zero">	
-				</p>
-				<p align="middle">
-					<input type="number" class="filterNumber" id="filterNumber1">
-					<input type="number" class="filterNumber" id="filterNumber2">
-					<input type="number" class="filterNumber" id="filterNumber3">
-					<input type="number" class="filterNumber" id="filterNumber4">
-				</p>
-				<p align="middle">
-					<button id="filterButton">Filter</button>
-				</p>
-			<!-- </div> -->
+			<h1 align="middle">User Filter :</h1>
+			<p align="middle">
+				1<input type="checkbox" checked name="checkbox" id="userCheck1">
+				2<input type="checkbox" checked name="checkbox" id="userCheck2">
+				3<input type="checkbox" checked name="checkbox" id="userCheck3">
+				4<input type="checkbox" checked name="checkbox" id="userCheck4">
+				5<input type="checkbox" checked name="checkbox" id="userCheck5">
+				6<input type="checkbox" checked name="checkbox" id="userCheck6">
+				7<input type="checkbox" checked name="checkbox" id="userCheck7">
+				8<input type="checkbox" checked name="checkbox" id="userCheck8">
+				9<input type="checkbox" checked name="checkbox" id="userCheck9">
+				0<input type="checkbox" checked name="checkbox" id="userCheck0">	
+			</p>
+			<p align="middle">
+				<input type="number" class="filterNumber" id="filterNumber1">
+				<input type="number" class="filterNumber" id="filterNumber2">
+				<input type="number" class="filterNumber" id="filterNumber3">
+				<input type="number" class="filterNumber" id="filterNumber4">
+			</p>
+			<p align="middle">
+				<button id="filterButton">Filter</button>
+			</p>
 			<p align="middle">
 				<textarea readonly="readonly" id="possibleAnswers" name="textArea" rows="25" cols="25"></textarea>
 			</p>
 		</div>
 		<div class="container" id="second">
 			<h1 align="middle">Bulls&Cows</h1>
+			<div class="userContainer">
+				<h4 align="middle">User Guess</h4>
+				<p align="middle">
+					<input type="number" id="input" name="">
+					<button id="checkButton">Check</button>
+				</p>
+				<p align="middle">
+					<textarea readonly="readonly" id="trysArea" name="textArea" rows="6" cols="38">You can see your trys here :</textarea>
+				</p>
+			</div>
+			<div class="computerContainer">
+				<h4 align="middle">Computer Guess</h4>
+				<div align="middle">
+					<p>
+						Number:  <textarea readonly="readonly" id="compGuess" rows="1" cols="5"></textarea>
+					</p>
+					Bulls:<input type="number" id="inputBulls" class="compGuessNumber">
+					Cows:<input type="number" id="inputCows" class="compGuessNumber">
+					<button id="checkButtonC">Check</button>
+				</div>
+				<p align="middle">
+					<textarea readonly="readonly" id="trysArea" name="textArea" rows="6" cols="38">You can see Comp trys here :</textarea>
+				</p>
+			</div>
 			<p align="middle">
-				<input type="number" id="input" name="">
-				<button id="checkButton">Check</button>
-				<button id="newGameButton" >New Game</button>
+				<button  id="newGameButton" >New Game</button>
 			</p>
+			<h4 align="middle">Notebook:</h4>
 			<p align="middle">
-				<textarea readonly="readonly" id="trysArea" name="textArea" rows="10" cols="38">You can see your trys here :</textarea>
-			</p>
-			<h3 align="middle">Notebook:</h3>
-			<p align="middle">
-				<textarea name="textArea" id="notepad" rows="10" cols="38"></textarea>
+				<textarea name="textArea" id="notepad" rows="6" cols="38"></textarea>
 			</p>
 			<p align="middle">
 				<button onclick="window.location.href = 'Bulls&CowsRules.html';"align="middle">Rules</button>	
 			</p>	
 		</div>	
-		
+		<div class="container" id="first">
+			<h1 align="middle">Computer Filter :</h1>
+			<p align="middle">
+				1<input type="checkbox" disabled="disabled" checked name="checkbox" id="compCheck1">
+				2<input type="checkbox" disabled="disabled" checked name="checkbox" id="compCheck2">
+				3<input type="checkbox" disabled="disabled" checked name="checkbox" id="compCheck3">
+				4<input type="checkbox" disabled="disabled" checked name="checkbox" id="compCheck4">
+				5<input type="checkbox" disabled="disabled" checked name="checkbox" id="compCheck5">
+				6<input type="checkbox" disabled="disabled" checked name="checkbox" id="compCheck6">
+				7<input type="checkbox" disabled="disabled" checked name="checkbox" id="compCheck7">
+				8<input type="checkbox" disabled="disabled" checked name="checkbox" id="compCheck8">
+				9<input type="checkbox" disabled="disabled" checked name="checkbox" id="compCheck9">
+				0<input type="checkbox" disabled="disabled" checked name="checkbox" id="compCheck0">
+			</p>
+			<p align="middle">
+				<input disabled="disabled" type="number" class="filterNumber" id="filterNumber1C">
+				<input disabled="disabled" type="number" class="filterNumber" id="filterNumber2C">
+				<input disabled="disabled" type="number" class="filterNumber" id="filterNumber3C">
+				<input disabled="disabled" type="number" class="filterNumber" id="filterNumber4C">
+			</p>
+			<p align="middle">
+				<textarea readonly="readonly" id="possibleAnswersC" name="textArea" rows="25" cols="25"></textarea>
+			</p>
 		<script type="text/javascript" src="Bulls&Cows.js"></script>
 	</body>
 </html>

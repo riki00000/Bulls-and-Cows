@@ -10,15 +10,28 @@ body{
 	background-color: pink;
 	border-style: inset;
 	margin-top: 1em;
-	margin-left: 4em;
-	margin-right: 4em;
+	margin-left: 2em;
+	margin-right: 2em;
 	float: left;
 	width: 350px;
+}
+.userContainer{
+	background-color: red;
+	border-style: inset;
+}
+.computerContainer{
+	background-color: #F5F5F5;
+	border-style: inset;
 }
 .filterNumber{
 	width: 5%;
 	margin-left: 8px;
 	margin-right: 8px;
+}
+.compGuessNumber{
+	width: 10%;
+	margin-left: 4px;
+	margin-right: 4px;
 }
 input[type=number]::-webkit-inner-spin-button, 
 input[type=number]::-webkit-outer-spin-button { 

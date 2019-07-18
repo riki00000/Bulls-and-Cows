@@ -2,8 +2,8 @@
 
 function main (){
 	let numberSize = 4;
-	let bulls = 0;
-	let cows = 0;
+	let userBulls = 0;
+	let userCows = 0;
 	let givenNumber = 1111 ;//random not valid number
 	let trysCounter =0;
 	let checkButton = document.getElementById("checkButton");
@@ -14,15 +14,39 @@ function main (){
 	let notepadArea = document.getElementById("notepad");
 	let filterButton = document.getElementById("filterButton");
 	// var checkBox = document.getElementsByName("checkbox");
+	let userTurn = true;
+	let checkButton2 = document.getElementById("checkButtonC");
+	let imputBulls = document.getElementById("inputBulls");
+	let imputCows = document.getElementById("inputCows");
+	let userContainer = document.getElementsByClassName("userContainer");
+	let computerContainer = document.getElementsByClassName("computerContainer");
+
+
+
+
 	let allValidNumbersArr = getAllValidNumbersInArray(numberSize);
 	showPossibleNumbersInTextArea(possAns,allValidNumbersArr);
 	givenNumber = allValidNumbersArr.random();
 	let givenNumberArr = numToArray(givenNumber);
 
+
+	if(userTurn){
+		checkButton.disabled = false;
+		checkButton2.disabled = true;
+		inputBulls.disabled = true;
+		inputCows.disabled = true;
+		numInput.disabled = false;
+		userContainer.bgColor = "red";
+		computerContainer.bgColor = "#F5F5F5";
+
+	}else{
+		
+	}
+
 	numInput.addEventListener("keyup", function(event) {
 	  if (event.keyCode === 13) {
 	    event.preventDefault();
-	    checkButton.click();
+	    checkButton.click(); //turns
 	  }
 	});
 
@@ -31,32 +55,60 @@ function main (){
 			trysCounter++;
 			let myNumber = numInput.value;
 			let myNumberArr = numToArray(myNumber);
-			bulls = checkBulls(myNumberArr,givenNumberArr);
-			cows = checkCows(myNumberArr,givenNumberArr);
-			let text = "Try "+ trysCounter + " -> "+ myNumber + " -> " + bulls + " bulls & " + cows + " cows";
-			textArea.value = textArea.value +"\n"+text;
-			if(bulls===numberSize){
+			userBulls = checkBulls(myNumberArr,givenNumberArr);
+			userCows = checkCows(myNumberArr,givenNumberArr);
+			textArea.value +="\n"+ printTry(trysCounter,myNumber,userBulls,userCows);
+			if(userBulls===numberSize){
 				alert("Congratulation! YOU WIN !");
-			}else{
-				// alert("WRONG! \n The number "+ myNumber + " have " + bulls + " bulls & " + cows + " cows")
 			}
-			bulls = 0;
-			cows = 0;
+			userBulls = 0;
+			userCows = 0;
 			clearField(numInput);
+			checkButton.disabled = true;
+			checkButton2.disabled = false;
+			numInput.disabled = true;
+			inputBulls.disabled = false;
+			inputCows.disabled = false;
+			userContainer.bgColor = "#F5F5F5";//not work
+			computerContainer.bgColor = "red";//not work
+			userTurn = false;
 		}else{
 			alert("The number is not valid !");
 		}
 	});
 
+	checkButton2.addEventListener("click",function(){
+		if(validBullsCows(imputBulls.value,imputCows.value,numberSize)){
+
+
+
+
+
+
+
+
+			checkButton.disabled = false;
+			checkButton2.disabled = true;
+			inputBulls.disabled = true;
+			inputCows.disabled = true;
+			numInput.disabled = false;
+			userContainer.bgColor = "red";//not work
+			computerContainer.bgColor = "#F5F5F5";//not work
+			userTurn = true;
+		}else{
+			alert("The number of Bulls or Cows is not valid !");
+		}
+	});
+
 	filterButton.addEventListener("click",function(){
-		let filter = filterNumber(allValidNumbersArr);
+		let filter = filterNumber(allValidNumbersArr,getCheckBoxArray("user"),getImputNumberFilterArray());
 	    clearField(possAns);
 	    showPossibleNumbersInTextArea(possAns,filter);
 	});
 
 	newGameButton.addEventListener("click",function(){
 		clearAllNumberFilterFields();
-		checkedAllCheckBoxes();
+		checkedAllCheckBoxes("user");
 		clearField(notepadArea);
 		clearField(textArea);
 		textArea.value = 'You can see your trys here :';
@@ -66,7 +118,18 @@ function main (){
 
 };
 //-----------------------------------------------------------------------------
-
+function printTry(trysCounter,guessNumber,bulls,cows){
+	let text = "Try "+ trysCounter + " -> "+ guessNumber + " -> " + bulls + " bulls & " + cows + " cows";
+	return text;
+}
+//-----------------------------------------------------------------------------
+function validBullsCows(bulls,cows,numberSize){
+	if(bulls>0 && cows>0 && bulls<=numberSize && cows<=numberSize){
+		return true;
+	}else{
+		return false;
+	}
+}
 //-----------------------------------------------------------------------------
 function numToArray(num) {
     let arr = [];
@@ -119,10 +182,9 @@ function clearField(input) {
 };
 //----------------------------------------------------------------------------
 function clearAllNumberFilterFields(){
-	clearField(document.getElementById("filterNumber1"));
-	clearField(document.getElementById("filterNumber2"));
-	clearField(document.getElementById("filterNumber3"));
-	clearField(document.getElementById("filterNumber4"));
+	for(let i =1;i<=4;i++){
+		clearField(document.getElementById("filterNumber"+i));
+	}
 }
 //----------------------------------------------------------------------------
 function getAllValidNumbersInArray(numberSize){
@@ -147,60 +209,30 @@ Array.prototype.random = function () {
   return this[Math.floor((Math.random()*this.length))];
 }
 //----------------------------------------------------------------------------
-function getCheckBoxArray(){
-	let checkBox0 = document.getElementById("zero");
-	let checkBox1 = document.getElementById("one");
-	let checkBox2 = document.getElementById("two");
-	let checkBox3 = document.getElementById("three");
-	let checkBox4 = document.getElementById("four");
-	let checkBox5 = document.getElementById("five");
-	let checkBox6 = document.getElementById("six");
-	let checkBox7 = document.getElementById("seven");
-	let checkBox8 = document.getElementById("eight");
-	let checkBox9 = document.getElementById("nine");
+function getCheckBoxArray(player){
 	let array = [];
-	array.push(checkBox0.checked);
-	array.push(checkBox1.checked);
-	array.push(checkBox2.checked);
-	array.push(checkBox3.checked);
-	array.push(checkBox4.checked);
-	array.push(checkBox5.checked);
-	array.push(checkBox6.checked);
-	array.push(checkBox7.checked);
-	array.push(checkBox8.checked);
-	array.push(checkBox9.checked);
+	for(let i =0;i<10;i++){
+		array.push(document.getElementById(player+"Check"+i).checked);
+	}
 	return array;
 }
 //----------------------------------------------------------------------------
-function checkedAllCheckBoxes(){
-	document.getElementById("zero").checked = true;
-	document.getElementById("one").checked = true;
-	document.getElementById("two").checked = true;
-	document.getElementById("three").checked = true;
-	document.getElementById("four").checked = true;
-	document.getElementById("five").checked = true;
-	document.getElementById("six").checked = true;
-	document.getElementById("seven").checked = true;
-    document.getElementById("eight").checked = true;
-	document.getElementById("nine").checked = true;
+function checkedAllCheckBoxes(player){
+	for(let i = 0;i<10;i++){
+		document.getElementById(player+"Check"+i).checked = true;
+	}
 }
 //----------------------------------------------------------------------------
 function getImputNumberFilterArray(){
-	let number1 = document.getElementById("filterNumber1");
-	let number2 = document.getElementById("filterNumber2");
-	let number3 = document.getElementById("filterNumber3");
-	let number4 = document.getElementById("filterNumber4");
 	let array=[]
-	array.push(number1.value);
-	array.push(number2.value);
-	array.push(number3.value);
-	array.push(number4.value);
+	for(let i = 1 ; i<=4;i++){
+		array.push(document.getElementById("filterNumber"+i).value);
+	}
 	return array;
 }
 //----------------------------------------------------------------------------
-function filterArr(array){
+function filterArr(array,checkBoxArray){
 	let filteredArray = []
-	let checkBoxArray = getCheckBoxArray();
 	let flag = 0;
 	for(let i=0;i<array.length;i++){
 		let currNum = numToArray(array[i]);
@@ -217,10 +249,9 @@ function filterArr(array){
 	return filteredArray;
 }
 //----------------------------------------------------------------------------
-function filterNumber(array){
-	let inputNumberFilterArray = getImputNumberFilterArray();
+function filterNumber(array,checkBoxArray,inputNumberFilterArray){
 	let newFilteredArray = [];
-	let newArray = filterArr(array);
+	let newArray = filterArr(array,checkBoxArray);
 	let haveNumFlag = false;
 	let haveNumFlagArr = [];
 	let haveNumCounter = 0;
